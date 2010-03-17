@@ -228,7 +228,7 @@
     Raphael.fn.g.popup = function (x, y, text, dir, size) {
         dir = dir == null ? 2 : dir;
         size = size || 5;
-        text = text || "$9.99";
+        text = text == null ? "$9.99" : text.toString();
         var res = this.set(),
             d = 3;
         res.push(this.path().attr({fill: "#000", stroke: "none"}));
@@ -260,7 +260,7 @@
     };
     Raphael.fn.g.flag = function (x, y, text, angle) {
         angle = angle || 0;
-        text = text || "$9.99";
+        text = text == null ? "$9.99" : text.toString();
         var res = this.set(),
             d = 3;
         res.push(this.path().attr({fill: "#000", stroke: "none"}));
@@ -279,6 +279,7 @@
         return res.update(x, y);
     };
     Raphael.fn.g.label = function (x, y, text) {
+        text = text == null ? "$9.99" : text.toString();
         var res = this.set();
         res.push(this.rect(x, y, 10, 10).attr({stroke: "none", fill: "#000"}));
         res.push(this.text(x, y, text).attr(this.g.txtattr).attr({fill: "#fff"}));
@@ -296,6 +297,7 @@
         return this.rect(bb.x - r / 2, bb.y - r / 2, bb.width + r, bb.height + r, r).attr({stroke: "none", fill: "#000"}).insertBefore(set[0]);
     };
     Raphael.fn.g.drop = function (x, y, text, size, angle) {
+        text = text == null ? "$9.99" : text.toString();
         size = size || 30;
         angle = angle || 0;
         var res = this.set();
@@ -307,6 +309,7 @@
         return res;
     };
     Raphael.fn.g.blob = function (x, y, text, angle, size) {
+        text = text == null ? "$9.99" : text.toString();
         angle = (+angle + 1 ? angle : 45) + 90;
         size = size || 12;
         var rad = Math.PI / 180,
