@@ -180,7 +180,7 @@
     Raphael.fn.g.tag = function (x, y, text, angle, r) {
         angle = angle || 0;
         r = r == null ? 5 : r;
-        text = text == null ? "$9.99" : text;
+        text = text == null ? "$9.99" : text.toString();
         var R = .5522 * r,
             res = this.set(),
             d = 3;
