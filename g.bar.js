@@ -122,6 +122,7 @@ Raphael.fn.g.barchart = function (x, y, width, height, values, opts) {
     }
     chart.label = function (labels, isBottom) {
         labels = labels || [];
+        isBottom = isBottom == undefined ? true : isBottom;
         this.labels = paper.set();
         var L, l = -Infinity;
         if (opts.stacked) {
@@ -129,9 +130,9 @@ Raphael.fn.g.barchart = function (x, y, width, height, values, opts) {
                 var tot = 0;
                 for (var j = 0; j < (multi || 1); j++) {
                     tot += multi ? values[j][i] : values[i];
-                    if (j == multi - 1) {
-                        var label = paper.g.labelise(labels[i], tot, total);
-                        L = paper.g.text(bars[i * (multi || 1) + j].x, y + height - barvgutter / 2, label).insertBefore(covers[i * (multi || 1) + j]);
+                    if (j == 0) {
+                        var label = paper.g.labelise(labels[j][i], tot, total);
+                        L = paper.g.text(bars[j][i].x, isBottom ? y + height - barvgutter / 2 : bars[j][i].y - 10, label);
                         var bb = L.getBBox();
                         if (bb.x - 7 < l) {
                             L.remove();
@@ -145,8 +146,9 @@ Raphael.fn.g.barchart = function (x, y, width, height, values, opts) {
         } else {
             for (var i = 0; i < len; i++) {
                 for (var j = 0; j < (multi || 1); j++) {
-                    var label = paper.g.labelise(multi ? labels[j] && labels[j][i] : labels[i], multi ? values[j][i] : values[i], total);
-                    L = paper.g.text(bars[i * (multi || 1) + j].x, isBottom ? y + height - barvgutter / 2 : bars[i * (multi || 1) + j].y - 10, label).insertBefore(covers[i * (multi || 1) + j]);
+                    // did not remove the loop because don't yet know whether to accept multi array input for arrays
+                    var label = paper.g.labelise(multi ? labels[0] && labels[0][i] : labels[i], multi ? values[0][i] : values[i], total);
+                     L = paper.g.text(bars[0][i].x, isBottom ? y + height - barvgutter / 2 : bars[0][i].y - 10, label);
                     var bb = L.getBBox();
                     if (bb.x - 7 < l) {
                         L.remove();

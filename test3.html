@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <script src="../raphael/raphael.js" type="text/javascript"></script>
+    <script src="g.raphael.js" type="text/javascript"></script>
+    <script src="g.line.js" type="text/javascript"></script>
+    <script src="g.bar.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      window.onload = function() {
+        r = Raphael("holder", 1240, 600);
+        
+        var fin = function () {
+                this.flag = r.g.popup(this.bar.x, this.bar.y, this.bar.value || "0").insertBefore(this);
+            };
+        var fout = function () {
+                this.flag.animate({opacity: 0}, 300, function () {this.remove();});
+            };
+
+        var states = ["California", "Illinois", "Mississippi", "Colorado", "Arkansas", "Minnesota", "North Dakota", "Georgia", "Nevada", "Rhode Island"];
+        var values = [1,7,8,2,3,5,10,6,4,9];
+        var values2 = [7,6,5,10,9,8,4,3,2,1];
+
+<!--         r.g.text(60, 30, "Single unstacked"); -->
+<!--         r.g.barchart(0, 0, 550, 250, [[20], [80]]).hover(fin, fout). -->
+<!--             label([["male"], ["female"]]); -->
+  
+        r.g.text(60, 30, "Single unstacked");
+        r.g.barchart(0, 0, 550, 250, [values], { stacked: false }).hover(fin, fout).
+            label([states]);
+
+        r.g.text(660, 30, "Single stacked");
+        r.g.barchart(600, 0, 550, 250, [values], { stacked: true }).hover(fin, fout).
+            label([states], false);
+
+        r.g.text(60, 300, "Multi unstacked");
+        r.g.barchart(0, 300, 550, 250, [values, values2], { stacked: false }).hover(fin, fout).
+            label([states], true);
+  
+        r.g.text(660, 300, "Multi stacked");
+        r.g.barchart(600, 300, 550, 250, [values, values2], { stacked: true }).hover(fin, fout).
+            label([states], false);
+
+      };
+    </script>
+  </head>
+  <body class="raphael" id="g.raphael.dmitry.baranovskiy.com">
+    <h2>Testing labels for bar graphs</h2>
+    <div id="holder"></div>
+    <p>
+      Demo of <a href="http://g.raphaeljs.com/">gRaphaël</a> JavaScript library.
+    </p>
+
+  </body>
+</html>
