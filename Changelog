@@ -1,0 +1,15 @@
+
+ g.raphael changelog
+=====================
+
+cail:
+  - new pie options:
+    sector_attr: hash for svg attrs to be merged with default for sector
+    label_attr: hash for svg attrs to be merged with default for text labels
+    hover_legend: hover will work for labels also
+  
+  - service method g.merge_options to merge with default attrs hash
+
+TODO:
+  - implement animated update of values?
+
