@@ -18,7 +18,9 @@ Raphael.fn.g.piechart = function (cx, cy, r, values, opts) {
         others = 0,
         cut = 9,
         defcut = true;
+
     chart.covers = covers;
+
     if (len == 1) {
         series.push(this.circle(cx, cy, r).attr({fill: this.g.colors[0], stroke: opts.stroke || "#fff", "stroke-width": opts.strokewidth == null ? 1 : opts.strokewidth}));
         covers.push(this.circle(cx, cy, r).attr(this.g.shim));
@@ -70,7 +72,14 @@ Raphael.fn.g.piechart = function (cx, cy, r, values, opts) {
                 var ipath = sector(cx, cy, 1, angle, angle - 360 * values[i] / total).join(",");
             }
             var path = sector(cx, cy, r, angle, angle -= 360 * values[i] / total);
-            var p = this.path(opts.init ? ipath : path).attr({fill: opts.colors && opts.colors[i] || this.g.colors[i] || "#666", stroke: opts.stroke || "#fff", "stroke-width": (opts.strokewidth == null ? 1 : opts.strokewidth), "stroke-linejoin": "round"});
+            var p = this.path(opts.init ? ipath : path).
+                           attr( this.g.mergeoptions( {fill: opts.colors && opts.colors[i] || this.g.colors[i] || "#666",
+                                                        stroke: opts.stroke || "#fff",
+                                                        "stroke-width": (opts.strokewidth == null ? 1 : opts.strokewidth),
+                                                        "stroke-linejoin": "round"
+                                                       },
+                                                       opts.sector_attr)
+                                                     );
             p.value = values[i];
             p.middle = path.middle;
             p.mangle = mangle;
@@ -79,12 +88,15 @@ Raphael.fn.g.piechart = function (cx, cy, r, values, opts) {
             opts.init && p.animate({path: path.join(",")}, (+opts.init - 1) || 1000, ">");
         }
         for (var i = 0; i < len; i++) {
-            var p = paper.path(sectors[i].attr("path")).attr(this.g.shim);
+            var p = paper.path(sectors[i].attr("path")).attr(this.g.mergeoptions(this.g.shim, opts.cover_attr));
             opts.href && opts.href[i] && p.attr({href: opts.href[i]});
             p.attr = function () {};
             covers.push(p);
             series.push(p);
         }
+    }
+    
+    chart.update = function (newvalues) {
     }
 
     chart.hover = function (fin, fout) {
@@ -110,6 +122,15 @@ Raphael.fn.g.piechart = function (cx, cy, r, values, opts) {
                 }).mouseout(function () {
                     fout.call(o);
                 });
+
+                if (opts.hover_legend) {
+                  that.labels[j].mouseover(function () {
+                      fin.call(o);
+                  }).mouseout(function () {
+                      fout.call(o);
+                  });
+                }
+
             })(series[i], covers[i], i);
         }
         return this;
@@ -181,9 +202,14 @@ Raphael.fn.g.piechart = function (cx, cy, r, values, opts) {
             labels[j] = paper.g.labelise(labels[j], values[i], total);
             chart.labels.push(paper.set());
             chart.labels[i].push(paper.g[mark](x + 5, h, 5).attr({fill: clr, stroke: "none"}));
-            chart.labels[i].push(txt = paper.text(x + 20, h, labels[j] || values[j]).attr(paper.g.txtattr).attr({fill: opts.legendcolor || "#000", "text-anchor": "start"}));
+            chart.labels[i].push(txt = paper.text(x + 20, h, labels[j] || values[j]).attr(paper.g.txtattr).attr(
+                                                              paper.g.mergeoptions(
+                                                                {fill: opts.legendcolor || "#000", "text-anchor": "start"},
+                                                                opts.legend_attr
+                                                              )));
             covers[i].label = chart.labels[i];
-            h += txt.getBBox().height * 1.2;
+            h += txt.getBBox().height;
+            opts.href && opts.href[i] && txt.attr({href: opts.href[i]});
         }
         var bb = chart.labels.getBBox(),
             tr = {
