@@ -3,12 +3,17 @@
 =====================
 
 cail:
-  - new pie options:
+  - g.pie options:
     sector_attr: hash for svg attrs to be merged with default for sector
     label_attr: hash for svg attrs to be merged with default for text labels
-    hover_legend: hover will work for labels also
+    hover_legend: if true, hover will work for labels also
   
   - service method g.merge_options to merge with default attrs hash
+
+  - g.line options:
+    interpolate: if true, besier courves will be used to draw smooth line eges
+    length_adapt: adaptation coefficient for how actively smoothing is done. Default is 0.1, good values are in (0 - 0.5)
+    angle_adapt: adaptation coefficient for how curves angles are shifted. Default is 0.5 (symmetrical), good values are in (0 - 1)
 
 TODO:
   - implement animated update of values?

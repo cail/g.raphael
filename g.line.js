@@ -105,11 +105,42 @@ Raphael.fn.g.linechart = function (x, y, width, height, valuesx, valuesy, opts) 
         var sym = this.raphael.is(symbol, "array") ? symbol[i] : symbol,
             symset = this.set();
         path = [];
+        var prev = {x: -1, y: -1};
+        var fx = function(i,j){
+            return x + gutter + ((valuesx[i] || valuesx[0])[j] - minx) * kx;
+        }
+        var fy = function(i,j){
+            return y + height - gutter - (valuesy[i][j] - miny) * ky;
+        }
         for (var j = 0, jj = valuesy[i].length; j < jj; j++) {
-            var X = x + gutter + ((valuesx[i] || valuesx[0])[j] - minx) * kx;
-            var Y = y + height - gutter - (valuesy[i][j] - miny) * ky;
+            var X = fx(i, j);
+            var Y = fy(i, j);
             (Raphael.is(sym, "array") ? sym[j] : sym) && symset.push(this.g[Raphael.fn.g.markers[this.raphael.is(sym, "array") ? sym[j] : sym]](X, Y, (opts.width || 2) * 3).attr({fill: colors[i], stroke: "none"}));
-            path = path.concat([j ? "L" : "M", X, Y]);
+            if (!opts.interpolate) {
+              path = path.concat([j ? "L" : "M", X, Y]);
+            }else{
+              if (j == 0)
+              {
+                path = path.concat(["M", X, Y]);
+              }else{
+                var dir = {x: 0, y: 0};
+                if (j != 0) {
+                  // current vector and length estimate
+                  var v = {y: Y - prev.y, x: X - prev.x};
+                  var dir = Math.atan2(v.y, v.x)
+                  var len = Math.sqrt(v.x*v.x + v.y*v.y) * (opts.length_adapt || 0.2)
+                  // adapt to the next vector
+                  if (j < jj-1)
+                  {
+                    var nextv = {y: fy(i,j+1) - Y, x: fx(i,j+1) - X};
+                    dir = dir + (Math.atan2(nextv.y, nextv.x) - dir) * (opts.angle_adapt || 0.5)
+                  }
+                }
+                path = path.concat(["S", X - len*Math.cos(dir), Y - len*Math.sin(dir), X, Y]);
+              }
+            }
+            prev.x = X;
+            prev.y = Y;
         }
         symbols.push(symset);
         if (opts.shade) {
