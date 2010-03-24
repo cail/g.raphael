@@ -381,7 +381,7 @@
               i++;
             }
         } else {
-            while (!r) {
+            while (!isNaN(r) && !r) {
                 i = i || 1;
                 r = Math.floor(d * Math.pow(10, i)) / Math.pow(10, i);
                 i++;

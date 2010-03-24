@@ -14,6 +14,7 @@ cail:
     interpolate: if true, besier courves will be used to draw smooth line eges
     length_adapt: adaptation coefficient for how actively smoothing is done. Default is 0.1, good values are in (0 - 0.5)
     angle_adapt: adaptation coefficient for how curves angles are shifted. Default is 0.5 (symmetrical), good values are in (0 - 1)
+  - fixed annoyed hanging with invalid input data
 
 TODO:
   - implement animated update of values?
