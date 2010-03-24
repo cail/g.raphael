@@ -344,9 +344,9 @@
                 cx = k * rx * dy / ry + (x1 + x2) / 2,
                 cy = k * -ry * dx / rx + (y1 + y2) / 2;
             if (withAnimation) {
-                this.animate({x: cx, y: cy, path: ["M", x, y, "L", x1, y1, "A", rx, ry, 0, 1, 1, x2, y2, "z"].join(",")}, 500, ">");
+                this.animate({x: cx, y: cy, path: ["M", X, Y, "L", x1, y1, "A", rx, ry, 0, 1, 1, x2, y2, "z"].join(",")}, 500, ">");
             } else {
-                this.attr({x: cx, y: cy, path: ["M", x, y, "L", x1, y1, "A", rx, ry, 0, 1, 1, x2, y2, "z"].join(",")});
+                this.attr({x: cx, y: cy, path: ["M", X, Y, "L", x1, y1, "A", rx, ry, 0, 1, 1, x2, y2, "z"].join(",")});
             }
             return this;
         };
