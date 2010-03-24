@@ -179,6 +179,9 @@ Raphael.fn.g.piechart = function (cx, cy, r, values, opts) {
                     label: that.labels && that.labels[j]
                 };
                 cover.click(function () { f.call(o); });
+                if (opts.hover_legend) {
+                  that.labels[j].click(function () { f.call(o); });
+                }
             })(series[i], covers[i], i);
         }
         return this;
