@@ -11,6 +11,7 @@
         <script src="../raphael.js" type="text/javascript" charset="utf-8"></script>
         <script src="g.raphael.js" type="text/javascript" charset="utf-8"></script>
         <script src="g.line.js" type="text/javascript" charset="utf-8"></script>
+        <script src="g.hovers.js" type="text/javascript" charset="utf-8"></script>
         <script type="text/javascript" charset="utf-8">
             window.onload = function () {
                 var r = Raphael("holder", 1000, 800);
@@ -31,13 +32,17 @@
 
                 r.g.linechart(10, 10, 300, 220, x, [y, y2, y3]);
                 r.g.linechart(330, 10, 300, 220, x, [y, y2, y3], {shade: true});
-                r.g.linechart(10, 250, 300, 220, x, [y, y2, y3], {nostroke: true, shade: true});
+                var c3 = r.g.linechart(10, 250, 300, 220, x, [y, y2, y3], {nostroke: true, shade: true});
+                r.g.line_hover(c3);
+
                 
                 lastchartx = [[1, 2, 3, 4, 5, 6, 7],[3.5, 4.5, 5.5, 6.5, 7, 8]];
                 lastcharty = [[12, 32, 23, 15, 17, 27, 22], [10, 20, 30, 25, 15, 28]];
-                r.g.linechart(650, 10, 300, 220, lastchartx, lastcharty,
+                var ci = r.g.linechart(650, 100, 300, 220, lastchartx, lastcharty,
                                {axis: "0 0 1 1", interpolate: true, symbol: "x"}
                              )
+                r.g.line_hover(ci);
+
 
                 var lines = r.g.linechart(330, 250, 300, 220, lastchartx, lastcharty, {nostroke: false, axis: "0 0 1 1", symbol: "o"}).hoverColumn(function () {
                     this.tags = r.set();

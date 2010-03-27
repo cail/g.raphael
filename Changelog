@@ -16,6 +16,10 @@ cail:
     angle_adapt: adaptation coefficient for how curves angles are shifted. Default is 0.5 (symmetrical), good values are in (0 - 1)
   - fixed annoyed hanging with invalid input data
 
+  - g.hovers: helpers for the value hover tips.
+    Usage: g.line_hover(yourlinechart, options)
+    See g.hovers.js for options details
+
 TODO:
   - implement animated update of values?
 

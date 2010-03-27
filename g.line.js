@@ -215,6 +215,8 @@ Raphael.fn.g.linechart = function (x, y, width, height, valuesx, valuesy, opts) 
     chart.shades = shades;
     chart.symbols = symbols;
     chart.axis = axis;
+    chart.valuesx = valuesx;
+    chart.valuesy = valuesy;
     chart.hoverColumn = function (fin, fout) {
         !columns && createColumns();
         columns.mouseover(fin).mouseout(fout);
