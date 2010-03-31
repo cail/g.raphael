@@ -60,11 +60,11 @@ Raphael.fn.g.linechart = function (x, y, width, height, valuesx, valuesy, opts) 
     for (var i = 0, ii = valuesy.length; i < ii; i++) {
         len = Math.max(len, valuesy[i].length);
     }
+
+
+
     var shades = this.set();
     for (var i = 0, ii = valuesy.length; i < ii; i++) {
-        if (opts.shade) {
-            shades.push(this.path().attr({stroke: "none", fill: colors[i], opacity: opts.nostroke ? 1 : .3}));
-        }
         if (valuesy[i].length > width - 2 * gutter) {
             valuesy[i] = shrink(valuesy[i], width - 2 * gutter);
             len = width - 2 * gutter;
@@ -144,7 +144,13 @@ Raphael.fn.g.linechart = function (x, y, width, height, valuesx, valuesy, opts) 
         }
         symbols.push(symset);
         if (opts.shade) {
-            shades[i].attr({path: path.concat(["L", X, y + height - gutter, "L",  x + gutter + ((valuesx[i] || valuesx[0])[0] - minx) * kx, y + height - gutter, "z"]).join(",")});
+            shades.push(this.path().attr({
+              stroke: "none",
+              fill: colors[i],
+              opacity: opts.nostroke ? 1 : .3,
+              path: path.concat(["L", X, y + height - gutter, "L",  x + gutter + ((valuesx[i] || valuesx[0])[0] - minx) * kx, y + height - gutter, "z"]).join(",")
+            }));
+
         }
         !opts.nostroke && line.attr({path: path.join(",")});
     }
