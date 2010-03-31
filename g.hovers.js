@@ -12,7 +12,9 @@
  *    Default - just a value
  *  - stack_cumulative: if true, value series are treated as cumulative (each next should be above previous)
  *    Tips are positioned in a middle of each serie
- *
+ *  - leave_timer: ms to wait before fading out tooltips (1000ms default)
+ *  - enter_timer: ms to wait before doing movement of a tooltip (500ms default)
+ *  - animate_tags: true if tag movements should be animated
  */
 Raphael.fn.g.line_hover = function (chart, options)
 {
@@ -21,7 +23,10 @@ Raphael.fn.g.line_hover = function (chart, options)
                                hover_attr: {opacity: 0.6},
                                line_attr: {},
                                tip_text: function(chart, column, i){ return " " + Math.round(column.values[i]*100)/100 },
-                               stack_cumulative: false
+                               stack_cumulative: false,
+                               leave_timer: 1000,
+                               enter_timer: 300,
+                               animate_tags: true
                              }, options)
   chart.tag = r.set()
   chart.tag.push( r.path(["M", 0, 0, "l", 0, 10]) )
@@ -59,7 +64,7 @@ Raphael.fn.g.line_hover = function (chart, options)
           
           if (i+1 < chart.tag.length){
             chart.tag[i+1][1].attr({text: options.tip_text(chart, that, i) })
-            chart.tag[i+1].update(that.x, y, true);
+            chart.tag[i+1].update(that.x, y, options.animate_tags);
             chart.tag[i+1].show();
           }
         }
@@ -70,10 +75,10 @@ Raphael.fn.g.line_hover = function (chart, options)
         for(var i = that.y.length; i < chart.lines.length; i++){
           chart.tag[i+1].hide()
         }
-      }, 100);
+      }, options.enter_timer);
   }, function () {
     leave_timer = setTimeout(function () {
         chart.tag.animate({opacity: 0}, 500);
-      }, 1000);
+      }, options.leave_timer);
   });
 };
