@@ -22,7 +22,7 @@ Raphael.fn.g.piechart = function (cx, cy, r, values, opts) {
     chart.covers = covers;
 
     if (len == 1) {
-        series.push(this.circle(cx, cy, r).attr({fill: this.g.colors[0], stroke: opts.stroke || "#fff", "stroke-width": opts.strokewidth == null ? 1 : opts.strokewidth}));
+        series.push(this.circle(cx, cy, r).attr({fill: this.g.colors[0 + (opts.color_offset > 0 ? opts.color_offset : 0)], stroke: opts.stroke || "#fff", "stroke-width": opts.strokewidth == null ? 1 : opts.strokewidth}));
         covers.push(this.circle(cx, cy, r).attr(this.g.shim));
         total = values[0];
         values[0] = {value: values[0], order: 0, valueOf: function () { return this.value; }};
@@ -45,9 +45,11 @@ Raphael.fn.g.piechart = function (cx, cy, r, values, opts) {
             total += values[i];
             values[i] = {value: values[i], order: i, valueOf: function () { return this.value; }};
         }
-        values.sort(function (a, b) {
-            return b.value - a.value;
-        });
+        if (opts['sort'] === true) {
+            values.sort(function (a, b) {
+                return b.value - a.value;
+            });
+        }
         for (var i = 0; i < len; i++) {
             if (defcut && values[i] * 360 / total <= 1.5) {
                 cut = i;
@@ -73,7 +75,7 @@ Raphael.fn.g.piechart = function (cx, cy, r, values, opts) {
             }
             var path = sector(cx, cy, r, angle, angle -= 360 * values[i] / total);
             var p = this.path(opts.init ? ipath : path).
-                           attr( this.g.mergeoptions( {fill: opts.colors && opts.colors[i] || this.g.colors[i] || "#666",
+                           attr( this.g.mergeoptions( {fill: opts.colors && opts.colors[i] || this.g.colors[i + (opts.color_offset > 0 ? opts.color_offset : 0)] || "#666",
                                                         stroke: opts.stroke || "#fff",
                                                         "stroke-width": (opts.strokewidth == null ? 1 : opts.strokewidth),
                                                         "stroke-linejoin": "round"

@@ -2,6 +2,11 @@
  g.raphael changelog
 =====================
 
+jeybala:
+  - g.pie options:
+    sort: boolean indicator whether to sort, defaults to false
+    color_offset: int offset for sector color selection
+
 cail:
   - g.pie options:
     sector_attr: hash for svg attrs to be merged with default for sector
