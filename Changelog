@@ -2,6 +2,11 @@
  g.raphael changelog
 =====================
 
+jeybala:
+  - g.pie options:
+    sort: boolean indicator whether to sort, defaults to false
+    color_offset: int offset for sector color selection
+
 cail:
   - g.bar
     Fixed bug where bar with only negative values was calculated incorrectly
