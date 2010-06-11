@@ -45,25 +45,25 @@ Raphael.fn.g.piechart = function (cx, cy, r, values, opts) {
             total += values[i];
             values[i] = {value: values[i], order: i, valueOf: function () { return this.value; }};
         }
-        if (opts['sort'] === true) {
+        if (opts['sort'] != false) {
             values.sort(function (a, b) {
                 return b.value - a.value;
             });
-        }
-        for (var i = 0; i < len; i++) {
-            if (defcut && values[i] * 360 / total <= 1.5) {
-                cut = i;
-                defcut = false;
+            for (var i = 0; i < len; i++) {
+                if (defcut && values[i] * 360 / total <= 1.5) {
+                    cut = i;
+                    defcut = false;
+                }
+                if (i > cut) {
+                    defcut = false;
+                    values[cut].value += values[i];
+                    values[cut].others = true;
+                    others = values[cut].value;
+                }
             }
-            if (i > cut) {
-                defcut = false;
-                values[cut].value += values[i];
-                values[cut].others = true;
-                others = values[cut].value;
-            }
+            len = Math.min(cut + 1, values.length);
+            others && values.splice(len) && (values[cut].others = true);
         }
-        len = Math.min(cut + 1, values.length);
-        others && values.splice(len) && (values[cut].others = true);
         for (var i = 0; i < len; i++) {
             var mangle = angle - 360 * values[i] / total / 2;
             if (!i) {
