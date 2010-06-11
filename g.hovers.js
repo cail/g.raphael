@@ -37,10 +37,11 @@ Raphael.fn.g.line_hover = function (chart, options)
   }
   chart.tag.attr(options.hover_attr)
 
-  var leave_timer, move_timer;
+  var leave_timer;
+  var move_timer;
 
   chart.hoverColumn(function(){
-    that = this
+    var that = this
     clearTimeout(leave_timer);
     clearTimeout(move_timer);
 

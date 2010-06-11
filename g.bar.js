@@ -24,7 +24,9 @@ Raphael.fn.g.barchart = function (x, y, width, height, values, opts) {
         len = 0;
         for (var i = values.length; i--;) {
             bars.push(this.set());
-            total.push(Math.max.apply(Math, values[i]));
+            var vmax = Math.abs( Math.max.apply(Math, values[i]) );
+            var vmin = Math.abs( Math.min.apply(Math, values[i]) );
+            total.push(Math.max(vmax, vmin));
             len = Math.max(len, values[i].length);
         }
         if (opts.stacked) {

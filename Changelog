@@ -3,6 +3,9 @@
 =====================
 
 cail:
+  - g.bar
+    Fixed bug where bar with only negative values was calculated incorrectly
+
   - g.pie options:
     sector_attr: hash for svg attrs to be merged with default for sector
     label_attr: hash for svg attrs to be merged with default for text labels
