@@ -29,7 +29,7 @@ Raphael.fn.g.line_hover = function (chart, options)
                                animate_tags: true
                              }, options)
   chart.tag = r.set()
-  chart.tag.push( r.path(["M", 0, 0, "l", 0, 10]) )
+  chart.tag.push( r.path(["M", 0, 0, "l", 0, 0]) )
   chart.tag[0].attr(options.line_attr)
 
   for(var i = 0, ii = chart.valuesy.length; i < ii; i++) {
