@@ -17,7 +17,8 @@ Raphael.fn.g.barchart = function (x, y, width, height, values, opts) {
         paper = this,
         multi = 0,
         colors = opts.colors || this.g.colors,
-        len = values.length;
+        len = values.length,
+        radius = opts.radius || undefined;
     if (this.raphael.is(values[0], "array")) {
         total = [];
         multi = len;
@@ -63,7 +64,7 @@ Raphael.fn.g.barchart = function (x, y, width, height, values, opts) {
         for (var j = 0; j < (multi || 1); j++) {
             var h = Math.round((multi ? values[j][i] : values[i]) * Y),
                 top = y + height - barvgutter - h,
-                bar = this.g.finger(Math.round(X + barwidth / 2), top + h, barwidth, h, true, type).attr({stroke: colors[multi ? j : i], fill: colors[multi ? j : i]});
+                bar = this.g.finger(Math.round(X + barwidth / 2), top + h, barwidth, h, true, type, false, radius).attr({stroke: colors[multi ? j : i], fill: colors[multi ? j : i]});
             if (multi) {
                 bars[j].push(bar);
             } else {
@@ -92,7 +93,7 @@ Raphael.fn.g.barchart = function (x, y, width, height, values, opts) {
                 var bar = stack[s],
                     cover,
                     h = (size + bar.value) * Y,
-                    path = this.g.finger(bar.x, y + height - barvgutter - !!size * .5, barwidth, h, true, type, 1);
+                    path = this.g.finger(bar.x, y + height - barvgutter - !!size * .5, barwidth, h, true, type, 1, radius);
                 cvr.bars.push(bar);
                 size && bar.attr({path: path});
                 bar.h = h;

@@ -66,7 +66,7 @@
         }
     };
 
-    Raphael.fn.g.finger = function (x, y, width, height, dir, ending, isPath) {
+    Raphael.fn.g.finger = function (x, y, width, height, dir, ending, isPath, radius) {
         // dir 0 for horisontal and 1 for vertical
         if ((dir && !height) || (!dir && !width)) {
             return isPath ? "" : this.path();
@@ -116,10 +116,10 @@
             case "soft":
             var r;
             if (!dir) {
-                r = Math.min(width, Math.round(height / 5));
+                r = radius === undefined ? Math.min(width, Math.round(height / 5)) : radius;
                 path = ["M", x + .5, y + .5 - Math.floor(height / 2), "l", width - r, 0, "a", r, r, 0, 0, 1, r, r, "l", 0, height - r * 2, "a", r, r, 0, 0, 1, -r, r, "l", r - width, 0, "z"];
             } else {
-                r = Math.min(Math.round(width / 5), height);
+                r = radius === undefined ? Math.min(Math.round(width / 5), height) : radius;
                 path = ["M", x - Math.floor(width / 2), y, "l", 0, r - height, "a", r, r, 0, 0, 1, r, -r, "l", width - 2 * r, 0, "a", r, r, 0, 0, 1, r, r, "l", 0, height - r, "z"];
             }
         }
