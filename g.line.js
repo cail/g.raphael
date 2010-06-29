@@ -180,6 +180,7 @@ Raphael.fn.g.linechart = function (x, y, width, height, valuesx, valuesy, opts) 
             C.y = [];
             C.x = xs[i];
             C.axis = Xs[i];
+            C.valuex = Xs[i];
             for (var j = 0, jj = valuesy.length; j < jj; j++) {
                 Xs2 = valuesx[j] || valuesx[0];
                 for (var k = 0, kk = Xs2.length; k < kk; k++) {
