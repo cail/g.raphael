@@ -68,7 +68,7 @@
         }
     };
 
-    Raphael.fn.g.finger = function (x, y, width, height, dir, ending, isPath) {
+    Raphael.fn.g.finger = function (x, y, width, height, dir, ending, isPath, radius) {
         // dir 0 for horisontal and 1 for vertical
         if ((dir && !height) || (!dir && !width)) {
             return isPath ? "" : this.path();
@@ -117,10 +117,10 @@
             break;
             case "soft":
             if (!dir) {
-                r = mmin(width, Math.round(height / 5));
+                r = radius === undefined ? mmin(width, Math.round(height / 5)) : radius;
                 path = ["M", x + .5, y + .5 - ~~(height / 2), "l", width - r, 0, "a", r, r, 0, 0, 1, r, r, "l", 0, height - r * 2, "a", r, r, 0, 0, 1, -r, r, "l", r - width, 0, "z"];
             } else {
-                r = mmin(Math.round(width / 5), height);
+                r = radius === undefined ? mmin(Math.round(width / 5), height) : radius;
                 path = ["M", x - ~~(width / 2), y, "l", 0, r - height, "a", r, r, 0, 0, 1, r, -r, "l", width - 2 * r, 0, "a", r, r, 0, 0, 1, r, r, "l", 0, height - r, "z"];
             }
         }
@@ -411,16 +411,19 @@
             dx = length / steps;
         if (+orientation == 1 || +orientation == 3) {
             var Y = y,
-                addon = (orientation - 1 ? 1 : -1) * (dashsize + 3 + !!(orientation - 1));
+                addon = (orientation - 1 ? 1 : -1) * (dashsize + 3 + !!(orientation - 1)),
+                curr_label;
             while (Y >= y - length) {
                 type != "-" && type != " " && (path = path.concat(["M", x - (type == "+" || type == "|" ? dashsize : !(orientation - 1) * dashsize * 2), Y + .5, "l", dashsize * 2 + 1, 0]));
-                text.push(this.text(x + addon, Y, (labels && labels[j++]) || (Math.round(label) == label ? label : +label.toFixed(rnd))).attr(this.g.txtattr).attr({"text-anchor": orientation - 1 ? "start" : "end"}));
+                curr_label = Math.round(label) == label ? label : +label.toFixed(rnd);
+                text.push(this.text(x + addon, Y, (labels && (typeof(labels) == 'function' || typeof(labels[j++]) != "undefined")) ? (typeof(labels) == 'function' ? label(curr_label) : labels[j-1]) : curr_label).attr(this.g.txtattr).attr({"text-anchor": orientation - 1 ? "start" : "end"}));
                 label += d;
                 Y -= dx;
             }
             if (Math.round(Y + dx - (y - length))) {
                 type != "-" && type != " " && (path = path.concat(["M", x - (type == "+" || type == "|" ? dashsize : !(orientation - 1) * dashsize * 2), y - length + .5, "l", dashsize * 2 + 1, 0]));
-                text.push(this.text(x + addon, y - length, (labels && labels[j]) || (Math.round(label) == label ? label : +label.toFixed(rnd))).attr(this.g.txtattr).attr({"text-anchor": orientation - 1 ? "start" : "end"}));
+                curr_label = Math.round(label) == label ? label : +label.toFixed(rnd);
+                text.push(this.text(x + addon, y - length, (labels && (typeof(labels) == 'function' || typeof(labels[j]) != "undefined")) ? (typeof(labels) == 'function' ? labels(curr_label) : labels[j]) : curr_label).attr(this.g.txtattr).attr({"text-anchor": orientation - 1 ? "start" : "end"}));
             }
         } else {
             label = f;
@@ -429,10 +432,12 @@
             var X = x,
                 dx = length / steps,
                 txt = 0,
-                prev = 0;
+                prev = 0,
+                curr_label;
             while (X <= x + length) {
                 type != "-" && type != " " && (path = path.concat(["M", X + .5, y - (type == "+" ? dashsize : !!orientation * dashsize * 2), "l", 0, dashsize * 2 + 1]));
-                text.push(txt = this.text(X, y + addon, (labels && labels[j++]) || (Math.round(label) == label ? label : +label.toFixed(rnd))).attr(this.g.txtattr));
+                curr_label = Math.round(label) == label ? label : +label.toFixed(rnd);
+                text.push(txt = this.text(X, y + addon, (labels && (typeof(labels) == 'function' || typeof(labels[j++]) != "undefined")) ? (typeof(labels) == 'function' ? labels(curr_label) : labels[j-1]) : curr_label).attr(this.g.txtattr));
                 var bb = txt.getBBox();
                 if (prev >= bb.x - 5) {
                     text.pop(text.length - 1).remove();
@@ -444,7 +449,8 @@
             }
             if (Math.round(X - dx - x - length)) {
                 type != "-" && type != " " && (path = path.concat(["M", x + length + .5, y - (type == "+" ? dashsize : !!orientation * dashsize * 2), "l", 0, dashsize * 2 + 1]));
-                text.push(this.text(x + length, y + addon, (labels && labels[j]) || (Math.round(label) == label ? label : +label.toFixed(rnd))).attr(this.g.txtattr));
+                curr_label = Math.round(label) == label ? label : +label.toFixed(rnd);
+                text.push(this.text(x + length, y + addon, (labels && (typeof(labels) == 'function' || typeof(labels[j]) != "undefined")) ? (typeof(labels) == 'function' ? labels(curr_label) : labels[j]) : curr_label).attr(this.g.txtattr));
             }
         }
         var res = this.path(path);
