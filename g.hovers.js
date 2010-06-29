@@ -14,6 +14,7 @@
  *    Tips are positioned in a middle of each serie
  *  - leave_timer: ms to wait before fading out tooltips (1000ms default)
  *  - enter_timer: ms to wait before doing movement of a tooltip (500ms default)
+ *  - secure_top: prevent popup to overflow top area
  *  - animate_tags: true if tag movements should be animated
  */
 Raphael.fn.g.line_hover = function (chart, options)
@@ -26,6 +27,7 @@ Raphael.fn.g.line_hover = function (chart, options)
                                stack_cumulative: false,
                                leave_timer: 1000,
                                enter_timer: 300,
+                               secure_top: 40,
                                animate_tags: true
                              }, options)
   chart.tag = r.set()
@@ -61,6 +63,9 @@ Raphael.fn.g.line_hover = function (chart, options)
             }
             //if (prevy != -1 && y < prevy-80) y = prevy - 80;
             prevy = y
+          }
+          if (y-options.secure_top < 0){
+            y = options.secure_top;
           }
           
           if (i+1 < chart.tag.length){
