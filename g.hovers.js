@@ -43,27 +43,28 @@ Raphael.fn.g.line_hover = function (chart, options)
   var move_timer;
 
   chart.hoverColumn(function(){
-    var that = this
+    var that = this;
     clearTimeout(leave_timer);
     clearTimeout(move_timer);
 
     move_timer = setTimeout(function () {
         // draw vertical line
-        chart.tag[0].animate({path: ["M", that.x, that.attr('y'), "l", 0, that.attr('height')]}, 100)
-        var prevy = -1
+        chart.tag[0].animate({path: ["M", that.x, that.attr('y'), "l", 0, that.attr('height')]}, 100);
+        var prevy = -1;
         for (var i = 0, ii = that.y.length; i < ii; i++) {
-          var y = that.y[i]
+          var y = that.y[i];
           // cumulative logic
           if (options.stack_cumulative)
           {
             if (i == 0) {
-              y += (that.attr('height') - that.y[0])/2
+              y += (that.attr('height') - that.y[0])/2;
             }else{
-              y += (that.y[i-1]-that.y[i])/2
+              y += (that.y[i-1]-that.y[i])/2;
             }
-            //if (prevy != -1 && y < prevy-80) y = prevy - 80;
-            prevy = y
           }
+          if (prevy != -1 && y < prevy && y > prevy-options.secure_top) y = prevy - options.secure_top;
+          if (prevy != -1 && y > prevy && y < prevy+options.secure_top) y = prevy + options.secure_top;
+          prevy = y;
           if (y-options.secure_top < 0){
             y = options.secure_top;
           }
