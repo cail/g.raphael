@@ -380,7 +380,7 @@
               i++;
             }
         } else {
-            while (!isNaN(r) && !r) {
+            while (isFinite(d) && isFinite(r) && !r) {
                 i = i || 1;
                 r = ~~(d * Math.pow(10, i)) / Math.pow(10, i);
                 i++;
